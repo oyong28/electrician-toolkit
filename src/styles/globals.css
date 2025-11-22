@@ -1,0 +1,222 @@
+/* 
+  globals.css
+  - Base design system for Electrician Toolkit.
+  - Mirrors joeyoyong.com global variables + body styling so
+    the app feels like part of the same site.
+*/
+
+/* ============================
+   GLOBAL DESIGN VARIABLES
+   ============================ */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #212529;
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --nav-bg: #0d6efd;
+  --nav-active: #ffffff;
+  --nav-active-bg: #0d6efd;
+  --footer-bg: #f8f9fa;
+}
+
+/* ============================
+   DARK MODE OVERRIDES
+   Applied when body has .dark-mode
+   ============================ */
+body.dark-mode {
+  --bg-color: #1e1e1e;
+  --text-color: #f8f9fa;
+  --card-bg: rgba(34, 34, 34, 0.95);
+  --nav-bg: #343a40;
+  --nav-active: #f8f9fa;
+  --nav-active-bg: #212529;
+  --footer-bg: #111111;
+}
+
+/* ============================
+   BODY BASE STYLING
+   ============================ */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: "Helvetica Neue", sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Shared card look used across the app */
+.card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer style matches main site */
+.app-footer {
+  background-color: var(--footer-bg);
+  color: var(--text-color);
+}
+
+/* ----------------------------------------------------------
+   Wire Color Guide - color pills
+   ---------------------------------------------------------- */
+
+.color-Black,
+.color-Red,
+.color-Blue,
+.color-Brown,
+.color-Orange,
+.color-Yellow {
+  display: inline-block;
+  padding: 0.15rem 0.7rem;
+  border-radius: 999px; /* pill shape */
+  font-weight: 600;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+/* Individual colors – tweak shades if you want */
+.color-Black {
+  background-color: #343a40;
+  color: #ffffff;
+}
+
+.color-Red {
+  background-color: #ff4b4b; /* close to your site’s red */
+  color: #ffffff;
+}
+
+.color-Blue {
+  background-color: #0d6efd;
+  color: #ffffff;
+}
+
+.color-Brown {
+  background-color: #8b4513;
+  color: #ffffff;
+}
+
+.color-Orange {
+  background-color: #fd7e14;
+  color: #ffffff;
+}
+
+.color-Yellow {
+  background-color: #ffff00;
+  color: #212529;
+}
+
+/* ----------------------------------------------------------
+   Shared tool card layout (Ohm's Law + Wire Color Guide)
+   ---------------------------------------------------------- */
+
+.tool-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.card {
+  width: 100%;
+  max-width: 720px; /* nice wide card like your site */
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.tool-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+/* Form layout */
+
+.tool-form {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 1rem; /* FIXED – matches spacing from your live site */
+}
+
+.form-label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  font-size: 0.95rem;
+}
+
+/* Button – same vibe as your site, but not full-width
+   (primary-button--small controls width) */
+
+.tool-button-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.9rem;
+}
+
+.primary-button {
+  background-color: #4285f4;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.55rem 1.75rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.05s ease;
+}
+
+.primary-button:hover {
+  background-color: #2f6fe0;
+  transform: translateY(-1px);
+}
+
+.primary-button:active {
+  background-color: #2456b2;
+  transform: translateY(0);
+}
+
+/* fixed width like your Ohm's Law button */
+.primary-button--small {
+  min-width: 220px;
+}
+
+/* Result boxes – info + error */
+
+.result-box {
+  margin-top: 1.25rem;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.result-box--info {
+  background-color: #e3f7ff; /* light blue like your site */
+  border: 1px solid #c1ecff;
+  color: #084d6e;
+}
+
+.result-box--error {
+  background-color: #fde2e4; /* gentle red */
+  border: 1px solid #f8b4b8;
+  color: #842029;
+}
+
+/* Center-align the full result line */
+.result-box--info,
+.result-box--error {
+  text-align: center; /* <-- clean centering */
+}
+.result-box--info strong {
+  margin-right: 0.3rem;
+}
