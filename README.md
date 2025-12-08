@@ -23,66 +23,69 @@ Tools include:
 
 ## 🏠 Architecture
 
-                +----------------------------------+
-                |     React Application Entry      |
-                |           (Vite)                 |
-                +----------------+-----------------+
-                                 |
-                                 | imports
-                                 v
-                    +------------+-------------+
-                    |       main.jsx           |
-                    |  - Renders <App />       |
-                    +------------+-------------+
-                                 |
-                                 v
-                    +------------+-------------+
-                    |          App.jsx         |
-                    |  - Layout wrapper        |
-                    |  - Routes tool views     |
-                    +------------+-------------+
-                                 |
-               +-----------------+-----------------+
-               |                                   |
-               v                                   v
-   +-----------+-------------+          +-----------+-------------+
-   |       Layout Components |          |     Tool Components     |
-   |  Header.jsx             |          |  OhmsLawTool.jsx        |
-   |  Sidebar.jsx            |          |  VoltageDropTool.jsx    |
-   |  Footer.jsx             |          |  BreakerLoadTool.jsx    |
-   +-----------+-------------+          |  WireSizeTool.jsx       |
-               |                        |  WireAmpacityTool.jsx   |
-               |                        |  ConduitFillTool.jsx    |
-               |                        |  PanelLoadTool.jsx      |
-               |                        |  BoxFillTool.jsx        |
-               |                        +-----------+-------------+
-               |                                    |
-               v                                    v
-   +-----------+-------------+          +-----------+-------------+
-   |        UI Components    |          |      Data Modules       |
-   |  Card.jsx               |          |  ampacityTable.js       |
-   |  InputField.jsx         |          |  conduitFillTable.js    |
-   |  SelectField.jsx        |          |  wireColors.js          |
-   |  ResultBox.jsx          |          +-------------------------+
-   +-----------+-------------+
-               |
-               v
-   +-----------+-------------+
-   | ThemeContext.jsx        |
-   | - Dark/Light Mode       |
-   | - Shared global state   |
-   +-----------+-------------+
+                ```text
+        +----------------------------------+
+        |     React Application Entry      |
+        |             (Vite)               |
+        +----------------+-----------------+
+                         |
+                         | imports
+                         v
+                +--------+---------+
+                |     main.jsx     |
+                |  - Renders App   |
+                +--------+---------+
+                         |
+                         v
+                +--------+---------+
+                |      App.jsx     |
+                |  - Layout wrap   |
+                |  - Routes views  |
+                +--------+---------+
+                         |
+        +----------------+---------------------+
+        |                                      |
+        v                                      v
++-------+---------+               +------------+-------------+
+| Layout Components|              |         Tool Components  |
+| Header.jsx       |              | OhmsLawTool.jsx          |
+| Sidebar.jsx      |              | VoltageDropTool.jsx      |
+| Footer.jsx       |              | BreakerLoadTool.jsx      |
++-------+---------+               | WireSizeTool.jsx         |
+        |                         | WireAmpacityTool.jsx     |
+        |                         | ConduitFillTool.jsx      |
+        |                         | PanelLoadTool.jsx        |
+        |                         | BoxFillTool.jsx          |
+        |                         +------------+--------------+
+        |                                      |
+        v                                      v
++-------+---------+               +------------+--------------+
+|    UI Components |              |        Data Modules       |
+| Card.jsx         |              | ampacityTable.js          |
+| InputField.jsx   |              | conduitFillTable.js       |
+| SelectField.jsx  |              | wireColors.js             |
+| ResultBox.jsx    |              +---------------------------+
++-------+---------+
+        |
+        v
++-------+-----------+
+| ThemeContext.jsx  |
+| - Dark/Light Mode |
+| - Shared state    |
++-------+-----------+
 
-                 +----------------------------------+
-                 |             Vite Build           |
-                 |   Transforms React → JS bundle   |
-                 +----------------+-----------------+
-                                 |
-                                 | deploy ready
-                                 v
-                 +----------------------------------+
-                 |   Optional Deployment on Pi/NGINX|
-                 +----------------------------------+
+        +----------------------------------+
+        |             Vite Build           |
+        |  Transforms React → JS bundle    |
+        +----------------+-----------------+
+                         |
+                         | deploy-ready
+                         v
+        +----------------------------------+
+        | Optional Deploy via Pi / NGINX   |
+        +----------------------------------+
+```
+
 
 ---
 
