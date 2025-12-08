@@ -23,7 +23,7 @@ Tools include:
 
 ## 🏠 Architecture
 
-                ```text
+                <pre><code>
         +----------------------------------+
         |     React Application Entry      |
         |             (Vite)               |
@@ -84,7 +84,8 @@ Tools include:
         +----------------------------------+
         | Optional Deploy via Pi / NGINX   |
         +----------------------------------+
-```
+</code></pre>
+
 
 
 ---
