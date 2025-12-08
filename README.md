@@ -23,69 +23,26 @@ Tools include:
 
 ## 🏠 Architecture
 
-                <pre><code>
-        +----------------------------------+
-        |     React Application Entry      |
-        |             (Vite)               |
-        +----------------+-----------------+
-                         |
-                         | imports
-                         v
-                +--------+---------+
-                |     main.jsx     |
-                |  - Renders App   |
-                +--------+---------+
-                         |
-                         v
-                +--------+---------+
-                |      App.jsx     |
-                |  - Layout wrap   |
-                |  - Routes views  |
-                +--------+---------+
-                         |
-        +----------------+---------------------+
-        |                                      |
-        v                                      v
-+-------+---------+               +------------+-------------+
-| Layout Components|              |         Tool Components  |
-| Header.jsx       |              | OhmsLawTool.jsx          |
-| Sidebar.jsx      |              | VoltageDropTool.jsx      |
-| Footer.jsx       |              | BreakerLoadTool.jsx      |
-+-------+---------+               | WireSizeTool.jsx         |
-        |                         | WireAmpacityTool.jsx     |
-        |                         | ConduitFillTool.jsx      |
-        |                         | PanelLoadTool.jsx        |
-        |                         | BoxFillTool.jsx          |
-        |                         +------------+--------------+
-        |                                      |
-        v                                      v
-+-------+---------+               +------------+--------------+
-|    UI Components |              |        Data Modules       |
-| Card.jsx         |              | ampacityTable.js          |
-| InputField.jsx   |              | conduitFillTable.js       |
-| SelectField.jsx  |              | wireColors.js             |
-| ResultBox.jsx    |              +---------------------------+
-+-------+---------+
-        |
-        v
-+-------+-----------+
-| ThemeContext.jsx  |
-| - Dark/Light Mode |
-| - Shared state    |
-+-------+-----------+
+  ```mermaid
+flowchart TD
+  A["React Application Entry<br/>(Vite)"]
+  B["main.jsx<br/>Renders &lt;App /&gt;"]
+  C["App.jsx<br/>Layout wrapper<br/>Routes tool views"]
 
-        +----------------------------------+
-        |             Vite Build           |
-        |  Transforms React → JS bundle    |
-        +----------------+-----------------+
-                         |
-                         | deploy-ready
-                         v
-        +----------------------------------+
-        | Optional Deploy via Pi / NGINX   |
-        +----------------------------------+
-</code></pre>
+  A --> B
+  B --> C
 
+  C --> D["Layout Components<br/>Header.jsx<br/>Sidebar.jsx<br/>Footer.jsx"]
+  C --> E["Tool Components<br/>OhmsLawTool.jsx<br/>VoltageDropTool.jsx<br/>BreakerLoadTool.jsx<br/>WireSizeTool.jsx<br/>WireAmpacityTool.jsx<br/>ConduitFillTool.jsx<br/>PanelLoadTool.jsx<br/>BoxFillTool.jsx"]
+
+  D --> F["UI Components<br/>Card.jsx<br/>InputField.jsx<br/>SelectField.jsx<br/>ResultBox.jsx"]
+  E --> G["Data Modules<br/>ampacityTable.js<br/>conduitFillTable.js<br/>wireColors.js"]
+
+  F --> H["ThemeContext.jsx<br/>Dark/Light Mode<br/>Shared state"]
+
+  C --> I["Vite Build<br/>Transforms React → JS bundle"]
+  I --> J["Deploy Option<br/>Served via Pi / NGINX"]
+```
 
 
 ---
