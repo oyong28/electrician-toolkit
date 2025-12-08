@@ -1,16 +1,140 @@
-# React + Vite
+# Electrician Toolkit (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## 🚀 Live App
+https://joeyoyong.com/electrician-toolkit/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+A collection of tools built for electricians and apprentices. This project was built using React and mirrors the styling of my main website at joeyoyong.com.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Tools include:
+- Ohm’s Law Calculator
+- Voltage Drop Calculator
+- Breaker Load Calculator
+- Wire Size Estimator
+- Wire Ampacity Reference
+- Conduit Fill Calculator
+- Panel Load Calculator
+- Box Fill Calculator
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🏠 Architecture
+
+                +----------------------------------+
+                |     React Application Entry      |
+                |           (Vite)                 |
+                +----------------+-----------------+
+                                 |
+                                 | imports
+                                 v
+                    +------------+-------------+
+                    |       main.jsx           |
+                    |  - Renders <App />       |
+                    +------------+-------------+
+                                 |
+                                 v
+                    +------------+-------------+
+                    |          App.jsx         |
+                    |  - Layout wrapper        |
+                    |  - Routes tool views     |
+                    +------------+-------------+
+                                 |
+               +-----------------+-----------------+
+               |                                   |
+               v                                   v
+   +-----------+-------------+          +-----------+-------------+
+   |       Layout Components |          |     Tool Components     |
+   |  Header.jsx             |          |  OhmsLawTool.jsx        |
+   |  Sidebar.jsx            |          |  VoltageDropTool.jsx    |
+   |  Footer.jsx             |          |  BreakerLoadTool.jsx    |
+   +-----------+-------------+          |  WireSizeTool.jsx       |
+               |                        |  WireAmpacityTool.jsx   |
+               |                        |  ConduitFillTool.jsx    |
+               |                        |  PanelLoadTool.jsx      |
+               |                        |  BoxFillTool.jsx        |
+               |                        +-----------+-------------+
+               |                                    |
+               v                                    v
+   +-----------+-------------+          +-----------+-------------+
+   |        UI Components    |          |      Data Modules       |
+   |  Card.jsx               |          |  ampacityTable.js       |
+   |  InputField.jsx         |          |  conduitFillTable.js    |
+   |  SelectField.jsx        |          |  wireColors.js          |
+   |  ResultBox.jsx          |          +-------------------------+
+   +-----------+-------------+
+               |
+               v
+   +-----------+-------------+
+   | ThemeContext.jsx        |
+   | - Dark/Light Mode       |
+   | - Shared global state   |
+   +-----------+-------------+
+
+                 +----------------------------------+
+                 |             Vite Build           |
+                 |   Transforms React → JS bundle   |
+                 +----------------+-----------------+
+                                 |
+                                 | deploy ready
+                                 v
+                 +----------------------------------+
+                 |   Optional Deployment on Pi/NGINX|
+                 +----------------------------------+
+
+---
+
+
+## 🧩 Tech Stack
+- React (Vite)
+- JavaScript (ES6+)
+- CSS Modules
+- Component-based architecture
+- Deployed through GitHub workflow
+
+---
+
+## 📂 Project Structure
+electrician-toolkit/
+├── index.html
+├── package.json
+├── vite.config.js
+├── public/
+└── src/
+├── main.jsx
+├── App.jsx
+├── styles/
+├── components/
+├── tools/
+├── data/
+└── context/
+
+---
+
+## 🚀 Running Locally
+
+### Install dependencies
+npm install
+
+### Start development server
+npm run dev
+
+### Build for production
+npm run build
+
+---
+
+## 🔗 Live Demo
+(You can add this once deployed under a subdomain like toolkit.joeyoyong.com)
+
+---
+
+## 💡 Purpose
+This app is part of my portfolio to demonstrate real-world problem solving using React and to share helpful tools with electricians.
+
+---
+
+## 📄 License
+This is a personal and educational project.
