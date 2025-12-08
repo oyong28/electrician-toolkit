@@ -2,11 +2,6 @@
 
 ---
 
-## 🚀 Live App
-https://joeyoyong.com/electrician-toolkit/
-
----
-
 A collection of tools built for electricians and apprentices. This project was built using React and mirrors the styling of my main website at joeyoyong.com.
 
 Tools include:
@@ -88,7 +83,7 @@ npm run build
 ---
 
 ## 🔗 Live Demo
-(You can add this once deployed under a subdomain like toolkit.joeyoyong.com)
+https://joeyoyong.com/electrician-toolkit/
 
 ---
 
