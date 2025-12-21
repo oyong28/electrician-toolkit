@@ -16,7 +16,7 @@ Tools include:
 
 ---
 
-## 🏠 Architecture
+## Architecture
 
   ```mermaid
 flowchart TD
@@ -43,7 +43,7 @@ flowchart TD
 ---
 
 
-## 🧩 Tech Stack
+## Tech Stack
 - React (Vite)
 - JavaScript (ES6+)
 - CSS Modules
@@ -52,7 +52,7 @@ flowchart TD
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 electrician-toolkit/
 ├── index.html
 ├── package.json
@@ -69,7 +69,7 @@ electrician-toolkit/
 
 ---
 
-## 🚀 Running Locally
+##  Running Locally
 
 ### Install dependencies
 npm install
@@ -87,10 +87,10 @@ https://joeyoyong.com/electrician-toolkit/
 
 ---
 
-## 💡 Purpose
+##  Purpose
 This app is part of my portfolio to demonstrate real-world problem solving using React and to share helpful tools with electricians.
 
 ---
 
-## 📄 License
+## License
 This is a personal and educational project.
