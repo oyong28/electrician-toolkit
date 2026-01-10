@@ -7,13 +7,7 @@ A collection of tools built for electricians and apprentices. This project was b
 Tools include:
 - Ohm’s Law Calculator
 - Voltage Drop Calculator
-- Breaker Load Calculator
-- Wire Size Estimator
-- Wire Ampacity Reference
-- Conduit Fill Calculator
-- Panel Load Calculator
-- Box Fill Calculator
-
+-More to come soon
 ---
 
 ## Architecture
