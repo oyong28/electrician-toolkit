@@ -81,18 +81,15 @@ electrician-toolkit/
 Running Locally
 Install dependencies:
 
-bash
-Copy code
+
 npm install
 Start development server:
 
-bash
-Copy code
+
 npm run dev
 Build for production:
 
-bash
-Copy code
+
 npm run build
 Deployment Notes
 Toolkit source is developed locally using Vite
@@ -101,8 +98,7 @@ Production builds generate static assets
 
 Build output is copied into the main website repo under:
 
-text
-Copy code
+
 /electrician-toolkit/
 Live site is served from a Raspberry Pi using NGINX
 
