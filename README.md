@@ -51,8 +51,7 @@ Component-based architecture
 Static build served via NGINX
 
 Project Structure
-text
-Copy code
+```
 electrician-toolkit/
 ├── index.html
 ├── package.json
@@ -78,35 +77,24 @@ electrician-toolkit/
     │   └── TapeFractionTool.jsx
     └── utils/
         └── tapeMath.js
-Running Locally
-Install dependencies:
-
-
-npm install
-Start development server:
-
-
-npm run dev
-Build for production:
-
-
-npm run build
-Deployment Notes
+```
+---
+Deployment Notes:
 Toolkit source is developed locally using Vite
 
 Production builds generate static assets
 
 Build output is copied into the main website repo under:
 
-
+---
 /electrician-toolkit/
 Live site is served from a Raspberry Pi using NGINX
 
 Source code and production build output are intentionally separated
-
+---
 Live Demo
 https://joeyoyong.com/electrician-toolkit/
-
+---
 Purpose
 This app is part of my portfolio and demonstrates:
 
@@ -117,6 +105,6 @@ Clean, readable component structure
 Field-accurate electrical calculations
 
 Tools designed around real electrician workflows
-
+---
 License
 Personal and educational project.
