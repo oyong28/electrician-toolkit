@@ -1,90 +1,126 @@
 # Electrician Toolkit (React + Vite)
 
+A collection of practical tools built for electricians and apprentices.
+
+Built with React + Vite. Styling matches my main site at **joeyoyong.com**.
+
+Field focus:
+- Tape-measure-friendly inputs
+- Results rounded to the nearest 1/16
+- Output formatting that matches jobsite workflow
+
 ---
 
-A collection of tools built for electricians and apprentices. This project was built using React and mirrors the styling of my main website at joeyoyong.com.
+## Tools Included
 
-Tools include:
-- Ohm’s Law Calculator
-- Voltage Drop Calculator
--More to come soon
+- **Ohm’s Law Calculator**
+- **Voltage Drop Calculator**
+- **Wire Color Guide**
+- **Conduit Bending Tool**
+  - 2-Bend Offset
+  - Rolling Offset
+  - Tape-friendly inputs (`4 1/4`, `5-7/8`, `10' 2 3/16"`)
+  - Results rounded to nearest 1/16
+- **Tape Fraction Calculator**
+  - Add, subtract, normalize tape measurements
+  - Outputs rounded to nearest 1/16
+
 ---
 
 ## Architecture
 
-  ```mermaid
+```mermaid
 flowchart TD
-  A["React Application Entry<br/>(Vite)"]
-  B["main.jsx<br/>Renders &lt;App /&gt;"]
-  C["App.jsx<br/>Layout wrapper<br/>Routes tool views"]
-
-  A --> B
-  B --> C
-
-  C --> D["Layout Components<br/>Header.jsx<br/>Sidebar.jsx<br/>Footer.jsx"]
-  C --> E["Tool Components<br/>OhmsLawTool.jsx<br/>VoltageDropTool.jsx<br/>BreakerLoadTool.jsx<br/>WireSizeTool.jsx<br/>WireAmpacityTool.jsx<br/>ConduitFillTool.jsx<br/>PanelLoadTool.jsx<br/>BoxFillTool.jsx"]
-
-  D --> F["UI Components<br/>Card.jsx<br/>InputField.jsx<br/>SelectField.jsx<br/>ResultBox.jsx"]
-  E --> G["Data Modules<br/>ampacityTable.js<br/>conduitFillTable.js<br/>wireColors.js"]
-
-  F --> H["ThemeContext.jsx<br/>Dark/Light Mode<br/>Shared state"]
-
-  C --> I["Vite Build<br/>Transforms React → JS bundle"]
-  I --> J["Deploy Option<br/>Served via Pi / NGINX"]
+  A["Vite Entry (index.html)"] --> B["main.jsx mounts React App"]
+  B --> C["App.jsx layout + tool switching"]
+  C --> D["Layout: Header / Sidebar / Footer"]
+  C --> E["Tools: Ohm's Law / Voltage Drop / Wire Color / Conduit Bending / Tape Fraction"]
+  E --> F["Utilities: tapeMath.js"]
+  C --> G["Vite build outputs static assets"]
+  G --> H["NGINX (Raspberry Pi) serves static site"]
 ```
+Tech Stack
+React (Vite)
 
+JavaScript (ES6+)
 
----
+Plain CSS (shared design system)
 
+Component-based architecture
 
-## Tech Stack
-- React (Vite)
-- JavaScript (ES6+)
-- CSS Modules
-- Component-based architecture
-- Deployed through GitHub workflow
+Static build served via NGINX
 
----
-
-##  Project Structure
+Project Structure
+text
+Copy code
 electrician-toolkit/
 ├── index.html
 ├── package.json
 ├── vite.config.js
 ├── public/
+│   └── vite.svg
 └── src/
-├── main.jsx
-├── App.jsx
-├── styles/
-├── components/
-├── tools/
-├── data/
-└── context/
+    ├── main.jsx
+    ├── App.jsx
+    ├── styles/
+    │   ├── globals.css
+    │   └── layout.css
+    ├── components/
+    │   └── layout/
+    │       ├── Header.jsx
+    │       ├── Sidebar.jsx
+    │       └── Footer.jsx
+    ├── tools/
+    │   ├── OhmsLawTool.jsx
+    │   ├── VoltageDropTool.jsx
+    │   ├── WireColorTool.jsx
+    │   ├── ConduitBendingTool.jsx
+    │   └── TapeFractionTool.jsx
+    └── utils/
+        └── tapeMath.js
+Running Locally
+Install dependencies:
 
----
-
-##  Running Locally
-
-### Install dependencies
+bash
+Copy code
 npm install
+Start development server:
 
-### Start development server
+bash
+Copy code
 npm run dev
+Build for production:
 
-### Build for production
+bash
+Copy code
 npm run build
+Deployment Notes
+Toolkit source is developed locally using Vite
 
----
+Production builds generate static assets
 
-## 🔗 Live Demo
+Build output is copied into the main website repo under:
+
+text
+Copy code
+/electrician-toolkit/
+Live site is served from a Raspberry Pi using NGINX
+
+Source code and production build output are intentionally separated
+
+Live Demo
 https://joeyoyong.com/electrician-toolkit/
 
----
+Purpose
+This app is part of my portfolio and demonstrates:
 
-##  Purpose
-This app is part of my portfolio to demonstrate real-world problem solving using React and to share helpful tools with electricians.
+Practical problem solving using React
 
----
+Clean, readable component structure
 
-## License
-This is a personal and educational project.
+Field-accurate electrical calculations
+
+Tools designed around real electrician workflows
+
+License
+Personal and educational project.
