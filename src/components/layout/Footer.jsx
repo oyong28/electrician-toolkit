@@ -1,4 +1,4 @@
-// Footer.jsx
+// src/components/layout/Footer.jsx
 // Footer section for the Electrician Toolkit application.
 
 import React from "react";

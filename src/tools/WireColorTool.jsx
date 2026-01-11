@@ -3,9 +3,8 @@
 // Summary:
 // - React tool component for the Wire Color Guide in the
 //   Electrician Toolkit dashboard.
-// - Replicates your original website tool:
 //   user selects a voltage system, enters a circuit number,
-//   and sees which phase color to use.
+//   and sees which phase color to use per NEC standards.
 // - Uses getWireColorForCircuit() helper instead of direct
 //   DOM access, and shares the same layout styles as the
 //   Ohm's Law tool.

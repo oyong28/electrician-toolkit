@@ -1,85 +1,92 @@
-// App.jsx
-// -------------------------------------------------------------
-// Summary:
-// - Top-level structure for the Electrician Toolkit.
-// - Renders Header, Sidebar, main panel, and Footer.
-// - Manages which tool is selected and shows the correct tool
-//   component in the main area.
-//
-// Structure:
-// - tools array: controls what appears in the sidebar.
-// - selectedToolKey state: tracks which tool is active.
-// - renderTool(): returns the correct tool component based
-//   on the selectedToolKey.
-// -------------------------------------------------------------
+// src/App.jsx
+// Mobile-friendly version of the PROD VIDEO layout.
+// Desktop: left rail under header + Tools button inside rail.
+// Mobile: left rail becomes a slide-in drawer opened from header.
 
 import React, { useState } from "react";
+import "./styles/globals.css";
+import "./styles/layout.css";
+
 import Header from "./components/layout/Header.jsx";
 import Sidebar from "./components/layout/Sidebar.jsx";
 import Footer from "./components/layout/Footer.jsx";
 
 import OhmsLawTool from "./tools/OhmsLawTool.jsx";
 import WireColorTool from "./tools/WireColorTool.jsx";
-// Later we will import:
-// import VoltageDropTool from "./tools/VoltageDropTool.jsx";
-// import ConduitFillTool from "./tools/ConduitFillTool.jsx";
-// import AmpacityTool from "./tools/AmpacityTool.jsx";
+import ConduitBendingTool from "./tools/ConduitBendingTool.jsx";
+import TapeFractionTool from "./tools/TapeFractionTool.jsx";
+import VoltageDropTool from "./tools/VoltageDropTool.jsx";
 
 function App() {
-  // List of tools that appear in the sidebar
   const tools = [
     { key: "ohmsLaw", label: "Ohm's Law" },
     { key: "wireColor", label: "Wire Color Guide" },
+    { key: "conduitBending", label: "Conduit Bending" },
+    { key: "tapeFraction", label: "Tape Fraction Calc" },
     { key: "voltageDrop", label: "Voltage Drop" },
-    { key: "conduitFill", label: "Conduit Fill" },
-    { key: "wireAmpacity", label: "Ampacity" },
   ];
 
-  // Currently selected tool key
   const [selectedToolKey, setSelectedToolKey] = useState("ohmsLaw");
+  const [toolsOpen, setToolsOpen] = useState(false);
 
-  // Optional: helper to get the label for the selected tool
-  const currentTool = tools.find((t) => t.key === selectedToolKey);
-
-  // Decide which tool component to render in the main panel
   const renderTool = () => {
     switch (selectedToolKey) {
-      case "ohmsLaw":
-        return <OhmsLawTool />;
       case "wireColor":
         return <WireColorTool />;
-      // Later we will add:
-      // case "voltageDrop":
-      //   return <VoltageDropTool />;
-      // case "conduitFill":
-      //   return <ConduitFillTool />;
-      // case "wireAmpacity":
-      //   return <AmpacityTool />;
+      case "conduitBending":
+        return <ConduitBendingTool />;
+      case "tapeFraction":
+        return <TapeFractionTool />;
+      case "voltageDrop":
+        return <VoltageDropTool />;
+      case "ohmsLaw":
       default:
-        return (
-          <p style={{ color: "#6c757d" }}>
-            This tool is coming soon. We will build it after Ohm&apos;s Law and
-            Wire Color Guide.
-          </p>
-        );
+        return <OhmsLawTool />;
     }
   };
 
   return (
     <div className="app-shell">
-      <Header />
+      <Header onOpenTools={() => setToolsOpen(true)} />
 
-      <Sidebar
-        tools={tools}
-        selectedToolKey={selectedToolKey}
-        onSelectTool={setSelectedToolKey}
-      />
+      <div className="app-shell-inner">
+        {/* LEFT RAIL / DRAWER */}
+        <aside className={"left-rail" + (toolsOpen ? " open" : "")}>
+          {/* Desktop tools button (hidden on mobile by CSS) */}
+          <button
+            type="button"
+            className="tools-button"
+            onClick={() => setToolsOpen((v) => !v)}
+            aria-expanded={toolsOpen}
+          >
+            ☰ Tools
+          </button>
 
-      <main className="app-main">
-        {/* If you ever want to show the current tool name at the top, you can use currentTool here */}
-        {/* <h1 className="app-main-title">{currentTool?.label}</h1> */}
-        {renderTool()}
-      </main>
+          <Sidebar
+            tools={tools}
+            selectedToolKey={selectedToolKey}
+            onSelectTool={(key) => {
+              setSelectedToolKey(key);
+              setToolsOpen(false);
+            }}
+          />
+        </aside>
+
+        {/* MAIN */}
+        <main className="app-main">
+          {/* Dim overlay when Tools is open (click to close) */}
+          <button
+            type="button"
+            className={"main-dim" + (toolsOpen ? " open" : "")}
+            aria-label="Close tools menu"
+            onClick={() => setToolsOpen(false)}
+          />
+
+          <div className="tool-stage">
+            <div className="tool-container">{renderTool()}</div>
+          </div>
+        </main>
+      </div>
 
       <Footer />
     </div>

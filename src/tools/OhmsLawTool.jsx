@@ -1,18 +1,18 @@
 // OhmsLawTool.jsx
-// React version of your Ohm's Law calculator.
-// Input order: P, E, I, R. Results order: P, E, I, R.
-// Math logic mirrors your existing ohms-law.js.
+// Ohm's Law calculator.
+// -------------------------------------------------------------
+// Original logic from ohms-law.js.
 
 import React, { useState } from "react";
 
-// Pure function that mirrors your original calculateOhmsLaw logic
+// Solves Ohm's Law equations given any two known values.
 function solveOhmsLaw({ P, V, I, R }) {
   let p = isNaN(P) ? null : P;
   let v = isNaN(V) ? null : V;
   let i = isNaN(I) ? null : I;
   let r = isNaN(R) ? null : R;
   let error = "";
-
+  // Try to compute missing values
   try {
     // Power
     if (p == null && v != null && i != null) p = v * i;
@@ -74,7 +74,7 @@ function OhmsLawTool() {
     <div className="tool-container">
       <div className="card">
         <h2 className="tool-title">Ohm&apos;s Law</h2>
-        {/* Fields stacked P, E, I, R like your site, with your placeholder text */}
+        {/* Fields stacked P, E, I, R */}
         <div className="form-grid">
           <div className="form-field">
             <label className="form-label" htmlFor="power">

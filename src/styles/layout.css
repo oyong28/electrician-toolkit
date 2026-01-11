@@ -1,74 +1,132 @@
 /* 
   layout.css
-  - App layout and component styling for Electrician Toolkit.
-  - Uses the same colors and card style as joeyoyong.com.
+  - App layout for Electrician Toolkit.
+  - Mobile friendly:
+    - Left rail becomes a slide-in drawer
+    - Tools button moves to header on mobile
 */
 
-/* Grid layout: header, sidebar, main, footer */
 .app-shell {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  grid-template-columns: 260px 1fr;
-  grid-template-areas:
-    "header header"
-    "sidebar main"
-    "footer footer";
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Header row */
 .app-header {
-  grid-area: header;
+  height: var(--header-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 1.5rem;
+  padding: 0 14px;
   background-color: var(--nav-bg);
   color: var(--nav-active);
+  box-sizing: border-box;
 }
 
-/* Sidebar column */
-.app-sidebar {
-  grid-area: sidebar;
-  padding: 1rem;
-  background-color: var(--footer-bg);
-  border-right: 1px solid rgba(0, 0, 0, 0.05);
+.header-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
 }
 
-/* Main content panel */
-.app-main {
-  grid-area: main;
-  padding: 1.5rem 2rem;
-  background-color: var(--bg-color);
-}
-
-/* Footer row */
-.app-footer {
-  grid-area: footer;
-  padding: 0.75rem 1.5rem;
-  font-size: 0.9rem;
+.header-right {
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  gap: 10px;
 }
 
-/* Sidebar tool list */
+.header-home {
+  color: var(--nav-active);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  opacity: 0.95;
+}
+
+.header-home:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* Mobile-only Tools button in header */
+.header-tools {
+  display: none; /* shown in mobile media query */
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--nav-active);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.header-tools:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* Row under header: left rail + main */
+.app-shell-inner {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+/* Left rail (desktop default) */
+.left-rail {
+  width: var(--left-rail-width);
+  background: #ffffff;
+  border-right: 1px solid var(--border-soft);
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Tools button (desktop, top of left rail) */
+.tools-button {
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  border-radius: 10px;
+  border: 1px solid rgba(13, 110, 253, 0.25);
+  background: rgba(13, 110, 253, 0.08);
+  color: #0d6efd;
+
+  padding: 6px 10px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.tools-button:hover {
+  background: rgba(13, 110, 253, 0.12);
+}
+
+/* Tool list container under Tools button */
+.sidebar-panel {
+  margin-top: 10px;
+}
+
+/* Tool list */
 .tool-list {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 6px;
 }
 
-/* Buttons in the sidebar use a "nav tab" style */
 .tool-button {
   width: 100%;
   text-align: left;
-  padding: 0.45rem 0.75rem;
-  border-radius: 0.5rem;
+
+  padding: 6px 10px;
+  border-radius: 6px;
   border: 1px solid transparent;
-  background-color: transparent;
+
+  background: transparent;
   color: var(--text-color);
+
   cursor: pointer;
   font-size: 0.95rem;
   transition: background-color 0.15s ease, color 0.15s ease,
@@ -80,132 +138,102 @@
 }
 
 .tool-button.active {
-  background-color: var(--nav-active-bg);
+  background-color: var(--nav-bg);
   color: var(--nav-active);
-  border-color: var(--nav-active-bg);
+  border-color: var(--nav-bg);
 }
 
-/* Card wrapper for tools (reuses .card base styles) */
-.card {
-  margin-top: 0.5rem;
-  padding: 1.1rem 1.35rem;
-}
-
-/* Form layout inside tools */
-.form-grid {
-  display: grid;
-  gap: 0.75rem;
-}
-
-.form-row-inline {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.form-field {
+/* Main area */
+.app-main {
   flex: 1;
+  position: relative;
+  background: var(--bg-color);
+  padding: 16px;
+  box-sizing: border-box;
+  overflow: auto;
 }
 
-.form-label {
-  display: block;
-  font-size: 0.85rem;
-  color: #6c757d;
-  margin-bottom: 0.25rem;
+/* Dim overlay (used for desktop and mobile) */
+.main-dim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  z-index: 5;
+  border: none;
 }
 
-.form-input,
-.form-select {
-  width: 100%;
-  padding: 0.5rem 0.6rem;
-  border-radius: 0.5rem;
-  border: 1px solid #ced4da;
-  background-color: #ffffff;
-  color: #212529;
+.main-dim.open {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.form-input:focus,
-.form-select:focus {
-  outline: none;
-  border-color: #0d6efd;
-  box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+/* Tool content sits above dim */
+.tool-stage {
+  position: relative;
+  z-index: 10;
 }
 
-.form-unit {
-  font-size: 0.8rem;
-  color: #6c757d;
-  margin-left: 0.25rem;
-}
-
-/* Result box */
-.result-box {
-  margin-top: 0.75rem;
-  padding: 0.75rem 0.9rem;
-  border-radius: 0.5rem;
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
+/* Footer */
+.app-footer {
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--footer-bg);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
   font-size: 0.9rem;
 }
 
-.result-title {
-  font-weight: 600;
-  margin-bottom: 0.35rem;
-}
+/* ============================
+   MOBILE DRAWER MODE
+   ============================ */
+@media (max-width: 768px) {
+  /* Show tools button in header */
+  .header-tools {
+    display: inline-flex;
+  }
 
-.result-note {
-  font-size: 0.8rem;
-  color: #6c757d;
-}
+  /* Hide the desktop tools button in the left rail */
+  .tools-button {
+    display: none;
+  }
 
-/* Primary button looks like a Bootstrap primary button */
-.button-primary {
-  margin-top: 0.75rem;
-  padding: 0.45rem 0.9rem;
-  border-radius: 0.5rem;
-  border: 1px solid #0d6efd;
-  background-color: #0d6efd;
-  color: #ffffff;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-}
+  /* Left rail becomes a drawer */
+  .left-rail {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    height: calc(100vh - var(--header-height));
+    width: min(var(--left-rail-width), 86vw);
 
-.button-primary:hover {
-  background-color: #0b5ed7;
-  border-color: #0a58ca;
-}
+    transform: translateX(-110%);
+    transition: transform 160ms ease;
 
-/* Center tool card like website (Projects page layout) */
-.tool-container {
-  max-width: 720px; /* Keep calculator narrow */
-  margin: 0 auto; /* Center horizontally */
-  padding: 20px 0 40px; /* Add top/bottom breathing room */
-  width: 100%;
-}
+    z-index: 20;
+    box-shadow: 8px 0 24px rgba(0, 0, 0, 0.12);
+  }
 
-/* Make cards match real-site styling */
-.card {
-  margin-top: 0.5rem;
-  padding: 1.5rem 2rem;
-  border-radius: 12px;
-  background-color: var(--card-bg);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
+  .left-rail.open {
+    transform: translateX(0);
+  }
 
-/* Centered tool title above the calculator */
-.tool-title {
-  text-align: center;
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
+  /* Main uses full width under header */
+  .app-shell-inner {
+    display: block;
+  }
 
-/* Compact centered calculate button */
-.button-primary-compact {
-  display: block;
-  margin: 1rem auto 0 auto;
-  padding: 0.45rem 1.4rem;
-  width: auto;
+  .app-main {
+    padding: 12px;
+  }
+
+  .card {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .tool-title {
+    font-size: 1.5rem;
+  }
 }

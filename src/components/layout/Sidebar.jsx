@@ -1,17 +1,17 @@
-// Sidebar.jsx
-// Left side tool selector. Renders a list of tools and highlights the selected tool.
+// src/components/layout/Sidebar.jsx
+// Tool selector list for the left rail.
+// Parent controls visibility.
 
 import React from "react";
 
-function Sidebar({ tools, selectedToolKey, onSelectTool }) {
+function Sidebar({ tools = [], selectedToolKey, onSelectTool }) {
   return (
-    <aside className="app-sidebar">
-      <h2 style={{ fontSize: "1rem", marginBottom: "0.75rem" }}>Tools</h2>
-
+    <div className="sidebar-panel">
       <div className="tool-list">
         {tools.map((tool) => (
           <button
             key={tool.key}
+            type="button"
             className={
               "tool-button" + (selectedToolKey === tool.key ? " active" : "")
             }
@@ -21,7 +21,7 @@ function Sidebar({ tools, selectedToolKey, onSelectTool }) {
           </button>
         ))}
       </div>
-    </aside>
+    </div>
   );
 }
 
