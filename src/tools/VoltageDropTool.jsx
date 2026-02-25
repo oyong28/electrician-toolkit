@@ -10,6 +10,7 @@
 // - Outputs VD (volts), percent drop, and estimated voltage at the load.
 
 import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const WIRE_CM = [
   { label: "14 AWG", cm: 4110 },
@@ -44,6 +45,8 @@ function round(n, d = 3) {
 }
 
 function VoltageDropTool() {
+  const { t } = useTranslation();
+
   const [system, setSystem] = useState("single"); // single | three
   const [material, setMaterial] = useState("copper"); // copper | aluminum
   const [wire, setWire] = useState(String(WIRE_CM[1].cm)); // default 12 AWG
@@ -60,13 +63,13 @@ function VoltageDropTool() {
     const CM = toNum(wire);
 
     if (!Number.isFinite(V) || V <= 0)
-      return { ok: false, msg: "Enter a valid system voltage." };
+      return { ok: false, msg: t("voltageDrop.errors.voltage") };
     if (!Number.isFinite(I) || I <= 0)
-      return { ok: false, msg: "Enter valid amperage > 0." };
+      return { ok: false, msg: t("voltageDrop.errors.amps") };
     if (!Number.isFinite(L) || L <= 0)
-      return { ok: false, msg: "Enter valid one-way length (ft) > 0." };
+      return { ok: false, msg: t("voltageDrop.errors.length") };
     if (!Number.isFinite(CM) || CM <= 0)
-      return { ok: false, msg: "Select a conductor size." };
+      return { ok: false, msg: t("voltageDrop.errors.wire") };
 
     const factor = system === "three" ? 1.732 : 2;
     const vd = (factor * k * I * L) / CM;
@@ -81,17 +84,17 @@ function VoltageDropTool() {
       factor,
       k,
     };
-  }, [system, material, wire, voltage, amps, lengthFt, k]);
+  }, [system, material, wire, voltage, amps, lengthFt, k, t]);
 
   return (
     <div className="tool-container">
       <div className="card">
-        <h2 className="tool-title">Voltage Drop</h2>
+        <h2 className="tool-title">{t("voltageDrop.title")}</h2>
 
         <form className="tool-form" onSubmit={(e) => e.preventDefault()}>
           <div className="form-group">
             <label className="form-label" htmlFor="system">
-              System
+              {t("voltageDrop.system")}
             </label>
             <select
               id="system"
@@ -99,14 +102,14 @@ function VoltageDropTool() {
               value={system}
               onChange={(e) => setSystem(e.target.value)}
             >
-              <option value="single">Single-Phase</option>
-              <option value="three">Three-Phase</option>
+              <option value="single">{t("voltageDrop.systemSingle")}</option>
+              <option value="three">{t("voltageDrop.systemThree")}</option>
             </select>
           </div>
 
           <div className="form-group">
             <label className="form-label" htmlFor="material">
-              Conductor Material
+              {t("voltageDrop.material")}
             </label>
             <select
               id="material"
@@ -114,14 +117,16 @@ function VoltageDropTool() {
               value={material}
               onChange={(e) => setMaterial(e.target.value)}
             >
-              <option value="copper">Copper (K=12.9)</option>
-              <option value="aluminum">Aluminum (K=21.2)</option>
+              <option value="copper">{t("voltageDrop.materialCopper")}</option>
+              <option value="aluminum">
+                {t("voltageDrop.materialAluminum")}
+              </option>
             </select>
           </div>
 
           <div className="form-group">
             <label className="form-label" htmlFor="wire">
-              Conductor Size
+              {t("voltageDrop.wire")}
             </label>
             <select
               id="wire"
@@ -139,13 +144,13 @@ function VoltageDropTool() {
 
           <div className="form-group">
             <label className="form-label" htmlFor="voltage">
-              System Voltage (V)
+              {t("voltageDrop.voltageLabel")}
             </label>
             <input
               id="voltage"
               className="form-control"
               inputMode="decimal"
-              placeholder="Example: 120"
+              placeholder={t("voltageDrop.placeholders.voltage")}
               value={voltage}
               onChange={(e) => setVoltage(e.target.value)}
             />
@@ -153,13 +158,13 @@ function VoltageDropTool() {
 
           <div className="form-group">
             <label className="form-label" htmlFor="amps">
-              Load Current (A)
+              {t("voltageDrop.ampsLabel")}
             </label>
             <input
               id="amps"
               className="form-control"
               inputMode="decimal"
-              placeholder="Example: 20"
+              placeholder={t("voltageDrop.placeholders.amps")}
               value={amps}
               onChange={(e) => setAmps(e.target.value)}
             />
@@ -167,13 +172,13 @@ function VoltageDropTool() {
 
           <div className="form-group">
             <label className="form-label" htmlFor="lengthFt">
-              One-Way Length (ft)
+              {t("voltageDrop.lengthLabel")}
             </label>
             <input
               id="lengthFt"
               className="form-control"
               inputMode="decimal"
-              placeholder="Example: 100"
+              placeholder={t("voltageDrop.placeholders.length")}
               value={lengthFt}
               onChange={(e) => setLengthFt(e.target.value)}
             />
@@ -182,13 +187,13 @@ function VoltageDropTool() {
           {out.ok ? (
             <div className="result-box result-box--info">
               <div>
-                <strong>Voltage Drop:</strong> {out.vd} V
+                <strong>{t("voltageDrop.resultVd")}:</strong> {out.vd} V
               </div>
               <div>
-                <strong>% Drop:</strong> {out.pct}%
+                <strong>{t("voltageDrop.resultPct")}:</strong> {out.pct}%
               </div>
               <div>
-                <strong>Estimated Voltage at Load:</strong> {out.loadV} V
+                <strong>{t("voltageDrop.resultLoadV")}:</strong> {out.loadV} V
               </div>
 
               <div
@@ -198,7 +203,7 @@ function VoltageDropTool() {
                   opacity: 0.9,
                 }}
               >
-                Factor={out.factor}, K={out.k}, length is one-way.
+                {t("voltageDrop.footerNote", { factor: out.factor, k: out.k })}
               </div>
             </div>
           ) : (

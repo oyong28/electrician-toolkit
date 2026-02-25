@@ -1,18 +1,19 @@
-// OhmsLawTool.jsx
-// Ohm's Law calculator.
-// -------------------------------------------------------------
-// Original logic from ohms-law.js.
+// src/tools/OhmsLawTool.jsx
+// Ohm's Law calculator (translated UI).
 
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 // Solves Ohm's Law equations given any two known values.
+// Returns errorKey instead of an English sentence so UI can translate it.
 function solveOhmsLaw({ P, V, I, R }) {
   let p = isNaN(P) ? null : P;
   let v = isNaN(V) ? null : V;
   let i = isNaN(I) ? null : I;
   let r = isNaN(R) ? null : R;
-  let error = "";
-  // Try to compute missing values
+
+  let errorKey = "";
+
   try {
     // Power
     if (p == null && v != null && i != null) p = v * i;
@@ -36,22 +37,24 @@ function solveOhmsLaw({ P, V, I, R }) {
 
     // Need at least two known values
     if ([p, v, i, r].filter((x) => x == null).length > 2) {
-      error = "Please provide at least two known values.";
+      errorKey = "ohmsLaw.errorTwoValues";
     }
 
-    return { p, v, i, r, error };
+    return { p, v, i, r, errorKey };
   } catch {
     return {
       p: null,
       v: null,
       i: null,
       r: null,
-      error: "Calculation error. Please check your inputs.",
+      errorKey: "ohmsLaw.errorCalc",
     };
   }
 }
 
 function OhmsLawTool() {
+  const { t, i18n } = useTranslation();
+
   // Raw input strings
   const [power, setPower] = useState("");
   const [voltage, setVoltage] = useState("");
@@ -70,15 +73,19 @@ function OhmsLawTool() {
     setResult(solved);
   };
 
+  // Quick debug you can remove later:
+  // If this logs correct Spanish strings when you toggle, i18n is fine.
+  console.log("LANG:", i18n.language, t("ohmsLaw.title"));
+
   return (
     <div className="tool-container">
       <div className="card">
-        <h2 className="tool-title">Ohm&apos;s Law</h2>
-        {/* Fields stacked P, E, I, R */}
+        <h2 className="tool-title">{t("ohmsLaw.title")}</h2>
+
         <div className="form-grid">
           <div className="form-field">
             <label className="form-label" htmlFor="power">
-              Power (P):
+              {t("ohmsLaw.power")}
             </label>
             <input
               id="power"
@@ -86,13 +93,13 @@ function OhmsLawTool() {
               type="number"
               value={power}
               onChange={(e) => setPower(e.target.value)}
-              placeholder="Leave blank if unknown"
+              placeholder={t("ohmsLaw.placeholderUnknown")}
             />
           </div>
 
           <div className="form-field">
             <label className="form-label" htmlFor="voltage">
-              Voltage (E):
+              {t("ohmsLaw.voltage")}
             </label>
             <input
               id="voltage"
@@ -100,13 +107,13 @@ function OhmsLawTool() {
               type="number"
               value={voltage}
               onChange={(e) => setVoltage(e.target.value)}
-              placeholder="Volts"
+              placeholder={t("ohmsLaw.placeholderVolts")}
             />
           </div>
 
           <div className="form-field">
             <label className="form-label" htmlFor="current">
-              Current (I):
+              {t("ohmsLaw.current")}
             </label>
             <input
               id="current"
@@ -114,13 +121,13 @@ function OhmsLawTool() {
               type="number"
               value={current}
               onChange={(e) => setCurrent(e.target.value)}
-              placeholder="Amps"
+              placeholder={t("ohmsLaw.placeholderAmps")}
             />
           </div>
 
           <div className="form-field">
             <label className="form-label" htmlFor="resistance">
-              Resistance (R):
+              {t("ohmsLaw.resistance")}
             </label>
             <input
               id="resistance"
@@ -128,7 +135,7 @@ function OhmsLawTool() {
               type="number"
               value={resistance}
               onChange={(e) => setResistance(e.target.value)}
-              placeholder="Leave blank if solving for Resistance"
+              placeholder={t("ohmsLaw.placeholderSolveResistance")}
             />
           </div>
         </div>
@@ -139,28 +146,28 @@ function OhmsLawTool() {
             type="button"
             onClick={handleCalculate}
           >
-            Calculate
+            {t("ohmsLaw.calculate")}
           </button>
         </div>
 
         {result && (
           <div className="result-box result-box-ohms">
-            {result.error ? (
-              <div className="result-note">{result.error}</div>
+            {result.errorKey ? (
+              <div className="result-note">{t(result.errorKey)}</div>
             ) : (
               <>
-                <div className="result-title">Results</div>
+                <div className="result-title">{t("ohmsLaw.results")}</div>
                 <div>
-                  <strong>Power (P):</strong> {result.p.toFixed(2)} W
+                  <strong>P:</strong> {result.p.toFixed(2)} W
                 </div>
                 <div>
-                  <strong>Voltage (E):</strong> {result.v.toFixed(2)} V
+                  <strong>E:</strong> {result.v.toFixed(2)} V
                 </div>
                 <div>
-                  <strong>Current (I):</strong> {result.i.toFixed(2)} A
+                  <strong>I:</strong> {result.i.toFixed(2)} A
                 </div>
                 <div>
-                  <strong>Resistance (R):</strong> {result.r.toFixed(2)} Ω
+                  <strong>R:</strong> {result.r.toFixed(2)} Ω
                 </div>
               </>
             )}

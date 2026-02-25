@@ -1,9 +1,10 @@
 // src/App.jsx
-// Mobile-friendly version of the PROD VIDEO layout.
-// Desktop: left rail under header + Tools button inside rail.
-// Mobile: left rail becomes a slide-in drawer opened from header.
+// Mobile-friendly layout for Electrician Toolkit.
+// Sidebar labels are now fully translatable via i18next.
 
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+
 import "./styles/globals.css";
 import "./styles/layout.css";
 
@@ -18,12 +19,14 @@ import TapeFractionTool from "./tools/TapeFractionTool.jsx";
 import VoltageDropTool from "./tools/VoltageDropTool.jsx";
 
 function App() {
+  const { t } = useTranslation();
+
   const tools = [
-    { key: "ohmsLaw", label: "Ohm's Law" },
-    { key: "wireColor", label: "Wire Color Guide" },
-    { key: "conduitBending", label: "Conduit Bending" },
-    { key: "tapeFraction", label: "Tape Fraction Calc" },
-    { key: "voltageDrop", label: "Voltage Drop" },
+    { key: "ohmsLaw", label: t("sidebar.ohmsLaw") },
+    { key: "wireColor", label: t("sidebar.wireColor") },
+    { key: "conduitBending", label: t("sidebar.conduitBending") },
+    { key: "tapeFraction", label: t("sidebar.tapeFraction") },
+    { key: "voltageDrop", label: t("sidebar.voltageDrop") },
   ];
 
   const [selectedToolKey, setSelectedToolKey] = useState("ohmsLaw");
@@ -50,16 +53,14 @@ function App() {
       <Header onOpenTools={() => setToolsOpen(true)} />
 
       <div className="app-shell-inner">
-        {/* LEFT RAIL / DRAWER */}
         <aside className={"left-rail" + (toolsOpen ? " open" : "")}>
-          {/* Desktop tools button (hidden on mobile by CSS) */}
           <button
             type="button"
             className="tools-button"
             onClick={() => setToolsOpen((v) => !v)}
             aria-expanded={toolsOpen}
           >
-            ☰ Tools
+            ☰ {t("header.tools")}
           </button>
 
           <Sidebar
@@ -72,9 +73,7 @@ function App() {
           />
         </aside>
 
-        {/* MAIN */}
         <main className="app-main">
-          {/* Dim overlay when Tools is open (click to close) */}
           <button
             type="button"
             className={"main-dim" + (toolsOpen ? " open" : "")}

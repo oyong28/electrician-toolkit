@@ -1,24 +1,16 @@
 // src/data/wireColors.js
 // -------------------------------------------------------------
 // Summary:
-// - Provides reusable helper functions and data for the
-//   Wire Color Guide tool in the Electrician Toolkit.
-// - Mirrors the original wire-color.js logic, but returns
-//   plain data so React components can use it without
-//   touching the DOM.
-//
-// Structure:
-// - Constant arrays for each voltage system.
-// - getWireColorForCircuit() - main helper that validates
-//   the circuit number and returns either an error object
-//   or a color result object.
+// - Provides helper logic for the Wire Color Guide tool.
+// - Returns data (no DOM) so React can render results cleanly.
+// - Uses stable color keys so UI can translate color names.
 // -------------------------------------------------------------
 
 // 208 V: Black, Black, Red, Red, Blue, Blue
-const COLORS_208 = ["Black", "Black", "Red", "Red", "Blue", "Blue"];
+const COLORS_208 = ["black", "black", "red", "red", "blue", "blue"];
 
 // 480 V: Brown, Brown, Orange, Orange, Yellow, Yellow
-const COLORS_480 = ["Brown", "Brown", "Orange", "Orange", "Yellow", "Yellow"];
+const COLORS_480 = ["brown", "brown", "orange", "orange", "yellow", "yellow"];
 
 const SYSTEM_COLOR_MAP = {
   208: COLORS_208,
@@ -33,7 +25,7 @@ const SYSTEM_COLOR_MAP = {
  *
  * @returns {object}
  *  - On success:
- *      { ok: true, circuit, color, colorClass }
+ *      { ok: true, circuit, colorKey, colorClass }
  *  - On error:
  *      { ok: false, error }
  */
@@ -55,12 +47,15 @@ export function getWireColorForCircuit(system, circuitNumber) {
   }
 
   const index = (circuitNumber - 1) % colors.length;
-  const color = colors[index];
+  const colorKey = colors[index];
+
+  // Match your existing CSS pill classes like .color-Black, .color-Red, etc.
+  const classNameSuffix = colorKey.charAt(0).toUpperCase() + colorKey.slice(1);
 
   return {
     ok: true,
     circuit: circuitNumber,
-    color,
-    colorClass: `color-${color}`,
+    colorKey,
+    colorClass: `color-${classNameSuffix}`,
   };
 }

@@ -12,6 +12,7 @@
 // - Outputs are rounded to nearest 1/16 and displayed as tape fractions.
 
 import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { formatTape, parseTapeToInches, roundToDenom } from "../utils/tapeMath";
 
 const ANGLE_OPTIONS = [
@@ -34,6 +35,8 @@ function toFixedSmart(n, places = 4) {
 }
 
 function ConduitBendingTool() {
+  const { t } = useTranslation();
+
   const [mode, setMode] = useState("offset"); // "offset" | "rolling" | "saddle3" | "saddle4"
   const [angleDeg, setAngleDeg] = useState("30");
 
@@ -58,11 +61,11 @@ function ConduitBendingTool() {
 
   const parsedSaddleHeight = useMemo(
     () => parseTapeToInches(saddleHeightIn),
-    [saddleHeightIn]
+    [saddleHeightIn],
   );
   const parsedSaddleWidth = useMemo(
     () => parseTapeToInches(saddleWidthIn),
-    [saddleWidthIn]
+    [saddleWidthIn],
   );
 
   const results = useMemo(() => {
@@ -80,7 +83,7 @@ function ConduitBendingTool() {
       if (!parsedOffset.ok || parsedOffset.inches <= 0) {
         return {
           ok: false,
-          message: "Enter a valid Offset greater than 0. Example: 4 1/4",
+          message: t("conduitBending.errors.offsetInvalid"),
         };
       }
 
@@ -91,17 +94,23 @@ function ConduitBendingTool() {
 
       return {
         ok: true,
-        title: "Offset Results (nearest 1/16)",
+        title: t("conduitBending.results.offsetTitle"),
         lines: [
-          { label: "Angle", value: angle.label },
-          { label: "Multiplier", value: `${angle.multiplier}` },
+          { label: t("conduitBending.labels.angle"), value: angle.label },
           {
-            label: "Distance between marks",
+            label: t("conduitBending.labels.multiplier"),
+            value: `${angle.multiplier}`,
+          },
+          {
+            label: t("conduitBending.labels.distanceBetweenMarks"),
             value: formatLine(distanceBetweenMarks),
           },
-          { label: "Shrink", value: formatLine(shrink) },
+          {
+            label: t("conduitBending.labels.shrink"),
+            value: formatLine(shrink),
+          },
         ],
-        note: "Distance between marks = spacing for two bend marks. Shrink = how much the run shortens due to the offset.",
+        note: t("conduitBending.notes.offsetNote"),
       };
     }
 
@@ -114,8 +123,7 @@ function ConduitBendingTool() {
       ) {
         return {
           ok: false,
-          message:
-            "Enter valid Rise and Roll greater than 0. Example: Rise 6, Roll 8",
+          message: t("conduitBending.errors.rollingInvalid"),
         };
       }
 
@@ -128,18 +136,27 @@ function ConduitBendingTool() {
 
       return {
         ok: true,
-        title: "Rolling Offset Results (nearest 1/16)",
+        title: t("conduitBending.results.rollingTitle"),
         lines: [
-          { label: "Angle", value: angle.label },
-          { label: "True offset (diagonal)", value: formatLine(trueOffset) },
-          { label: "Multiplier", value: `${angle.multiplier}` },
+          { label: t("conduitBending.labels.angle"), value: angle.label },
           {
-            label: "Distance between marks",
+            label: t("conduitBending.labels.trueOffset"),
+            value: formatLine(trueOffset),
+          },
+          {
+            label: t("conduitBending.labels.multiplier"),
+            value: `${angle.multiplier}`,
+          },
+          {
+            label: t("conduitBending.labels.distanceBetweenMarks"),
             value: formatLine(distanceBetweenMarks),
           },
-          { label: "Shrink", value: formatLine(shrink) },
+          {
+            label: t("conduitBending.labels.shrink"),
+            value: formatLine(shrink),
+          },
         ],
-        note: "Rolling offset uses true offset from Rise/Roll, then applies the same multiplier + shrink for the selected angle.",
+        note: t("conduitBending.notes.rollingNote"),
       };
     }
 
@@ -147,7 +164,7 @@ function ConduitBendingTool() {
       if (!parsedSaddleHeight.ok || parsedSaddleHeight.inches <= 0) {
         return {
           ok: false,
-          message: "Enter a valid Saddle Height greater than 0. Example: 2 1/2",
+          message: t("conduitBending.errors.saddleHeightInvalid"),
         };
       }
 
@@ -158,21 +175,30 @@ function ConduitBendingTool() {
 
       return {
         ok: true,
-        title: "3-Bend Saddle Results (nearest 1/16)",
+        title: t("conduitBending.results.saddle3Title"),
         lines: [
-          { label: "Bends", value: "22.5° — 45° — 22.5°" },
-          { label: "Saddle height", value: formatLine(h) },
-          { label: "Center mark advance", value: formatLine(centerAdvance) },
           {
-            label: "Outer marks from center (each side)",
+            label: t("conduitBending.labels.bends"),
+            value: "22.5° — 45° — 22.5°",
+          },
+          {
+            label: t("conduitBending.labels.saddleHeight"),
+            value: formatLine(h),
+          },
+          {
+            label: t("conduitBending.labels.centerMarkAdvance"),
+            value: formatLine(centerAdvance),
+          },
+          {
+            label: t("conduitBending.labels.outerMarksFromCenter"),
             value: formatLine(outerFromCenter),
           },
           {
-            label: "Outer ↔ center spacing",
+            label: t("conduitBending.labels.outerToCenterSpacing"),
             value: formatLine(outerFromCenter),
           },
         ],
-        note: "Mark the obstacle centerline, add the center advance for the center mark, then measure the outer mark distance on both sides.",
+        note: t("conduitBending.notes.saddle3Note"),
       };
     }
 
@@ -180,13 +206,13 @@ function ConduitBendingTool() {
       if (!parsedSaddleHeight.ok || parsedSaddleHeight.inches <= 0) {
         return {
           ok: false,
-          message: "Enter a valid Saddle Height greater than 0. Example: 2",
+          message: t("conduitBending.errors.saddleHeightInvalid4"),
         };
       }
       if (!parsedSaddleWidth.ok || parsedSaddleWidth.inches <= 0) {
         return {
           ok: false,
-          message: "Enter a valid Saddle Width/Span greater than 0. Example: 6",
+          message: t("conduitBending.errors.saddleWidthInvalid"),
         };
       }
 
@@ -204,46 +230,49 @@ function ConduitBendingTool() {
 
       return {
         ok: true,
-        title: "4-Bend Saddle Results (nearest 1/16)",
+        title: t("conduitBending.results.saddle4Title"),
         lines: [
-          { label: "Angle (all 4 bends)", value: angle.label },
-          { label: "Saddle height", value: formatLine(h) },
-          { label: "Saddle width/span", value: formatLine(w) },
+          { label: t("conduitBending.labels.angleAll4"), value: angle.label },
           {
-            label: "Mark spacing (each offset)",
+            label: t("conduitBending.labels.saddleHeight"),
+            value: formatLine(h),
+          },
+          {
+            label: t("conduitBending.labels.saddleWidthSpan"),
+            value: formatLine(w),
+          },
+          {
+            label: t("conduitBending.labels.markSpacingEachOffset"),
             value: formatLine(markSpacing),
           },
-          { label: "Shrink per side", value: formatLine(shrinkPerSide) },
           {
-            label: "Total shrink (both sides)",
+            label: t("conduitBending.labels.shrinkPerSide"),
+            value: formatLine(shrinkPerSide),
+          },
+          {
+            label: t("conduitBending.labels.totalShrink"),
             value: formatLine(totalShrink),
           },
           {
-            label: "From obstacle center: inner marks",
+            label: t("conduitBending.labels.innerMarksFromCenter"),
             value: {
-              tape: `± ${formatTape(innerFromCenter, {
-                denom: 16,
-                includeFeet: false,
-              })}`,
+              tape: `± ${formatTape(innerFromCenter, { denom: 16, includeFeet: false })}`,
               dec: `${toFixedSmart(innerFromCenter, 4)} in`,
             },
           },
           {
-            label: "From obstacle center: outer marks",
+            label: t("conduitBending.labels.outerMarksFromCenter2"),
             value: {
-              tape: `± ${formatTape(outerFromCenter, {
-                denom: 16,
-                includeFeet: false,
-              })}`,
+              tape: `± ${formatTape(outerFromCenter, { denom: 16, includeFeet: false })}`,
               dec: `${toFixedSmart(outerFromCenter, 4)} in`,
             },
           },
         ],
-        note: "Inner marks are at ±(width/2). Outer marks are at ±(width/2 + mark spacing). Bend order stays consistent and in the same plane.",
+        note: t("conduitBending.notes.saddle4Note"),
       };
     }
 
-    return { ok: false, message: "Select an option." };
+    return { ok: false, message: t("conduitBending.errors.selectOption") };
   }, [
     mode,
     angle,
@@ -252,6 +281,7 @@ function ConduitBendingTool() {
     parsedRoll,
     parsedSaddleHeight,
     parsedSaddleWidth,
+    t,
   ]);
 
   const renderParsedHint = (parsed) => {
@@ -261,7 +291,7 @@ function ConduitBendingTool() {
       <div
         style={{ marginTop: "0.35rem", fontSize: "0.85rem", color: "#6c757d" }}
       >
-        Parsed:{" "}
+        {t("conduitBending.parsed")}{" "}
         <strong>{formatTape(rounded, { denom: 16, includeFeet: true })}</strong>{" "}
         <span style={{ opacity: 0.9 }}>({toFixedSmart(rounded, 4)} in)</span>
       </div>
@@ -271,13 +301,13 @@ function ConduitBendingTool() {
   return (
     <div className="tool-container">
       <div className="card">
-        <h2 className="tool-title">Conduit Bending</h2>
+        <h2 className="tool-title">{t("conduitBending.title")}</h2>
 
         <form className="tool-form" onSubmit={(e) => e.preventDefault()}>
           {/* Mode */}
           <div className="form-group">
             <label className="form-label" htmlFor="mode">
-              Offset Type
+              {t("conduitBending.modeLabel")}
             </label>
             <select
               id="mode"
@@ -285,17 +315,23 @@ function ConduitBendingTool() {
               value={mode}
               onChange={(e) => setMode(e.target.value)}
             >
-              <option value="offset">2-Bend Offset</option>
-              <option value="rolling">Rolling Offset</option>
-              <option value="saddle3">3-Bend Saddle</option>
-              <option value="saddle4">4-Bend Saddle</option>
+              <option value="offset">{t("conduitBending.modes.offset")}</option>
+              <option value="rolling">
+                {t("conduitBending.modes.rolling")}
+              </option>
+              <option value="saddle3">
+                {t("conduitBending.modes.saddle3")}
+              </option>
+              <option value="saddle4">
+                {t("conduitBending.modes.saddle4")}
+              </option>
             </select>
           </div>
 
           {/* Angle */}
           <div className="form-group">
             <label className="form-label" htmlFor="angle">
-              Bend Angle
+              {t("conduitBending.angleLabel")}
             </label>
             <select
               id="angle"
@@ -304,12 +340,15 @@ function ConduitBendingTool() {
               onChange={(e) => setAngleDeg(e.target.value)}
               disabled={mode === "saddle3"}
               title={
-                mode === "saddle3" ? "3-bend saddle uses 22.5°-45°-22.5°" : ""
+                mode === "saddle3" ? t("conduitBending.saddle3AngleHint") : ""
               }
             >
               {ANGLE_OPTIONS.map((a) => (
                 <option key={a.deg} value={String(a.deg)}>
-                  {a.label} (mult {a.multiplier})
+                  {t("conduitBending.angleOption", {
+                    label: a.label,
+                    mult: a.multiplier,
+                  })}
                 </option>
               ))}
             </select>
@@ -319,13 +358,13 @@ function ConduitBendingTool() {
           {mode === "offset" ? (
             <div className="form-group">
               <label className="form-label" htmlFor="offsetIn">
-                Offset Distance
+                {t("conduitBending.offsetDistance")}
               </label>
               <input
                 id="offsetIn"
                 className="form-control"
                 inputMode="text"
-                placeholder='Examples: 4 1/4   |   3/16   |   10"'
+                placeholder={t("conduitBending.placeholders.offset")}
                 value={offsetIn}
                 onChange={(e) => setOffsetIn(e.target.value)}
               />
@@ -335,13 +374,13 @@ function ConduitBendingTool() {
             <>
               <div className="form-group">
                 <label className="form-label" htmlFor="riseIn">
-                  Rise
+                  {t("conduitBending.rise")}
                 </label>
                 <input
                   id="riseIn"
                   className="form-control"
                   inputMode="text"
-                  placeholder="Examples: 6   |   6 1/2   |   5-7/8"
+                  placeholder={t("conduitBending.placeholders.rise")}
                   value={riseIn}
                   onChange={(e) => setRiseIn(e.target.value)}
                 />
@@ -350,13 +389,13 @@ function ConduitBendingTool() {
 
               <div className="form-group">
                 <label className="form-label" htmlFor="rollIn">
-                  Roll
+                  {t("conduitBending.roll")}
                 </label>
                 <input
                   id="rollIn"
                   className="form-control"
                   inputMode="text"
-                  placeholder="Examples: 8   |   8 3/16   |   7-1/4"
+                  placeholder={t("conduitBending.placeholders.roll")}
                   value={rollIn}
                   onChange={(e) => setRollIn(e.target.value)}
                 />
@@ -366,13 +405,13 @@ function ConduitBendingTool() {
           ) : mode === "saddle3" ? (
             <div className="form-group">
               <label className="form-label" htmlFor="saddleHeightIn">
-                Saddle Height
+                {t("conduitBending.saddleHeight")}
               </label>
               <input
                 id="saddleHeightIn"
                 className="form-control"
                 inputMode="text"
-                placeholder="Examples: 2   |   2 1/2   |   1-3/4"
+                placeholder={t("conduitBending.placeholders.saddleHeight")}
                 value={saddleHeightIn}
                 onChange={(e) => setSaddleHeightIn(e.target.value)}
               />
@@ -382,13 +421,13 @@ function ConduitBendingTool() {
             <>
               <div className="form-group">
                 <label className="form-label" htmlFor="saddleHeightIn4">
-                  Saddle Height
+                  {t("conduitBending.saddleHeight")}
                 </label>
                 <input
                   id="saddleHeightIn4"
                   className="form-control"
                   inputMode="text"
-                  placeholder="Example: 2"
+                  placeholder={t("conduitBending.placeholders.saddleHeight4")}
                   value={saddleHeightIn}
                   onChange={(e) => setSaddleHeightIn(e.target.value)}
                 />
@@ -397,13 +436,13 @@ function ConduitBendingTool() {
 
               <div className="form-group">
                 <label className="form-label" htmlFor="saddleWidthIn">
-                  Saddle Width / Span
+                  {t("conduitBending.saddleWidthSpan")}
                 </label>
                 <input
                   id="saddleWidthIn"
                   className="form-control"
                   inputMode="text"
-                  placeholder="Example: 6"
+                  placeholder={t("conduitBending.placeholders.saddleWidth")}
                   value={saddleWidthIn}
                   onChange={(e) => setSaddleWidthIn(e.target.value)}
                 />

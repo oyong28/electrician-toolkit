@@ -1,10 +1,11 @@
 // src/tools/TapeFractionTool.jsx
 // Summary:
-// - Standalone tape fraction calculator (add/subtract).
+// - Standalone tape fraction calculator (add/subtract/multiply/divide).
 // - Inputs accept tape formats: 4 1/4, 3/16, 10' 2 3/16"
 // - Output is rounded to nearest 1/16.
 
 import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { formatTape, parseTapeToInches, roundToDenom } from "../utils/tapeMath";
 
 function toFixedSmart(n, places = 4) {
@@ -13,6 +14,8 @@ function toFixedSmart(n, places = 4) {
 }
 
 function TapeFractionTool() {
+  const { t } = useTranslation();
+
   const [a, setA] = useState("");
   const [op, setOp] = useState("+");
   const [b, setB] = useState("");
@@ -22,13 +25,28 @@ function TapeFractionTool() {
 
   const result = useMemo(() => {
     if (!parsedA.ok || !parsedB.ok) {
-      return { ok: false, message: "Enter two valid tape measurements." };
+      return { ok: false, message: t("tapeFraction.errors.twoValid") };
     }
 
     const aIn = parsedA.inches;
     const bIn = parsedB.inches;
 
-    const out = op === "-" ? aIn - bIn : aIn + bIn;
+    let out = NaN;
+
+    if (op === "+") out = aIn + bIn;
+    if (op === "-") out = aIn - bIn;
+    if (op === "*") out = aIn * bIn;
+    if (op === "/") {
+      if (bIn === 0) {
+        return { ok: false, message: t("tapeFraction.errors.divideByZero") };
+      }
+      out = aIn / bIn;
+    }
+
+    if (!Number.isFinite(out)) {
+      return { ok: false, message: t("tapeFraction.errors.generic") };
+    }
+
     const rounded = roundToDenom(out, 16);
 
     return {
@@ -36,7 +54,7 @@ function TapeFractionTool() {
       tape: formatTape(rounded, { denom: 16, includeFeet: true }),
       dec: `${toFixedSmart(rounded, 4)} in`,
     };
-  }, [parsedA, parsedB, op]);
+  }, [parsedA, parsedB, op, t]);
 
   const hint = (parsed) => {
     if (!parsed?.ok) return null;
@@ -45,7 +63,7 @@ function TapeFractionTool() {
       <div
         style={{ marginTop: "0.35rem", fontSize: "0.85rem", color: "#6c757d" }}
       >
-        Parsed:{" "}
+        {t("tapeFraction.parsed")}{" "}
         <strong>{formatTape(rounded, { denom: 16, includeFeet: true })}</strong>{" "}
         <span style={{ opacity: 0.9 }}>({toFixedSmart(rounded, 4)} in)</span>
       </div>
@@ -55,18 +73,18 @@ function TapeFractionTool() {
   return (
     <div className="tool-container">
       <div className="card">
-        <h2 className="tool-title">Tape Fraction Calculator</h2>
+        <h2 className="tool-title">{t("tapeFraction.title")}</h2>
 
         <form className="tool-form" onSubmit={(e) => e.preventDefault()}>
           <div className="form-group">
             <label className="form-label" htmlFor="a">
-              Measurement A
+              {t("tapeFraction.aLabel")}
             </label>
             <input
               id="a"
               className="form-control"
               inputMode="text"
-              placeholder="Examples: 3 1/2, 5-7/8, 10' 2 3/16&quot;"
+              placeholder={t("tapeFraction.placeholders.a")}
               value={a}
               onChange={(e) => setA(e.target.value)}
             />
@@ -75,7 +93,7 @@ function TapeFractionTool() {
 
           <div className="form-group">
             <label className="form-label" htmlFor="op">
-              Operation
+              {t("tapeFraction.opLabel")}
             </label>
             <select
               id="op"
@@ -83,20 +101,22 @@ function TapeFractionTool() {
               value={op}
               onChange={(e) => setOp(e.target.value)}
             >
-              <option value="+">Add (+)</option>
-              <option value="-">Subtract (−)</option>
+              <option value="+">{t("tapeFraction.ops.add")}</option>
+              <option value="-">{t("tapeFraction.ops.subtract")}</option>
+              <option value="*">{t("tapeFraction.ops.multiply")}</option>
+              <option value="/">{t("tapeFraction.ops.divide")}</option>
             </select>
           </div>
 
           <div className="form-group">
             <label className="form-label" htmlFor="b">
-              Measurement B
+              {t("tapeFraction.bLabel")}
             </label>
             <input
               id="b"
               className="form-control"
               inputMode="text"
-              placeholder='Examples: 1 1/4, 3/16, 2"'
+              placeholder={t("tapeFraction.placeholders.b")}
               value={b}
               onChange={(e) => setB(e.target.value)}
             />
@@ -106,7 +126,7 @@ function TapeFractionTool() {
           {result.ok ? (
             <div className="result-box result-box--info">
               <div>
-                <strong>Result:</strong> {result.tape}
+                <strong>{t("tapeFraction.resultLabel")}:</strong> {result.tape}
               </div>
               <div style={{ fontSize: "0.85rem", opacity: 0.85 }}>
                 {result.dec}

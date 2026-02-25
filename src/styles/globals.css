@@ -60,6 +60,7 @@ body {
   box-shadow: var(--shadow-soft);
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-sizing: border-box;
+  margin: 0 auto;
 }
 
 /* ============================
@@ -146,7 +147,29 @@ body {
   font-size: 0.95rem;
   box-sizing: border-box;
 }
+/* ============================
+   Form grid (used by Ohm's Law)
+   ============================ */
+.form-grid {
+  max-width: 520px;
+  margin: 0 auto; /* centers the whole form block */
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
 
+.form-field {
+  text-align: left; /* keeps labels clean */
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
 /* Buttons */
 .tool-button-row {
   display: flex;
@@ -163,7 +186,9 @@ body {
   font-weight: 500;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: background-color 0.15s ease, transform 0.05s ease;
+  transition:
+    background-color 0.15s ease,
+    transform 0.05s ease;
 }
 
 .primary-button:hover {

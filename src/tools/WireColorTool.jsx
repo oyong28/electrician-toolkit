@@ -3,39 +3,53 @@
 // Summary:
 // - React tool component for the Wire Color Guide in the
 //   Electrician Toolkit dashboard.
-//   user selects a voltage system, enters a circuit number,
-//   and sees which phase color to use per NEC standards.
-// - Uses getWireColorForCircuit() helper instead of direct
-//   DOM access, and shares the same layout styles as the
-//   Ohm's Law tool.
+// - User selects a voltage system, enters a circuit number,
+//   and sees which phase color to use.
+// - Uses getWireColorForCircuit() helper and shares the same
+//   layout styles as other tools.
 // -------------------------------------------------------------
 
 import React, { useState } from "react";
 import { getWireColorForCircuit } from "../data/wireColors";
+import { useTranslation } from "react-i18next";
 
 function WireColorTool() {
+  const { t } = useTranslation();
+
   const [voltageSystem, setVoltageSystem] = useState("208");
   const [circuitInput, setCircuitInput] = useState("");
   const [result, setResult] = useState(null); // { circuit, color, colorClass }
-  const [error, setError] = useState("");
+  const [errorKey, setErrorKey] = useState(""); // store translation key
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    setError("");
+    setErrorKey("");
     setResult(null);
 
     const circuitNumber = parseInt(circuitInput, 10);
     const response = getWireColorForCircuit(voltageSystem, circuitNumber);
 
     if (!response.ok) {
-      setError(response.error);
+      // IMPORTANT:
+      // If your helper returns raw English strings, we map them to translation keys here.
+      // This keeps UI fully translatable.
+      const msg = (response.error || "").toLowerCase();
+
+      if (msg.includes("enter") && msg.includes("circuit")) {
+        setErrorKey("wireColor.errorEnterCircuit");
+      } else if (msg.includes("valid") || msg.includes("number")) {
+        setErrorKey("wireColor.errorValidCircuit");
+      } else {
+        setErrorKey("wireColor.errorGeneric");
+      }
+
       return;
     }
 
     setResult({
       circuit: response.circuit,
-      color: response.color,
+      colorKey: response.colorKey,
       colorClass: response.colorClass,
     });
   };
@@ -43,13 +57,14 @@ function WireColorTool() {
   return (
     <div className="tool-container">
       <div className="card">
-        <h2 className="tool-title">Wire Color Guide</h2>
+        <h2 className="tool-title">{t("wireColor.title")}</h2>
 
         <form onSubmit={handleSubmit} className="tool-form">
           <div className="form-group">
             <label htmlFor="voltageSystem" className="form-label">
-              Voltage System
+              {t("wireColor.voltageSystem")}
             </label>
+
             <select
               id="voltageSystem"
               className="form-control"
@@ -63,8 +78,9 @@ function WireColorTool() {
 
           <div className="form-group">
             <label htmlFor="circuitNumber" className="form-label">
-              Circuit Number
+              {t("wireColor.circuitNumber")}
             </label>
+
             <input
               id="circuitNumber"
               type="number"
@@ -72,31 +88,33 @@ function WireColorTool() {
               className="form-control"
               value={circuitInput}
               onChange={(e) => setCircuitInput(e.target.value)}
-              placeholder="e.g. 34"
+              placeholder={t("wireColor.placeholderCircuit")}
             />
           </div>
 
-          {/* Centered, smaller button - same pattern as Ohm's Law */}
           <div className="tool-button-row">
             <button
               type="submit"
               className="primary-button primary-button--small"
             >
-              Get Wire Color
+              {t("wireColor.getWireColor")}
             </button>
           </div>
         </form>
 
-        {error && (
+        {errorKey && (
           <div className="result-box result-box--error" role="alert">
-            {error}
+            {t(errorKey)}
           </div>
         )}
 
-        {result && !error && (
+        {result && !errorKey && (
           <div className="result-box result-box--info">
-            <strong>Circuit #{result.circuit}</strong> uses{" "}
-            <span className={result.colorClass}>{result.color}</span> wire.
+            {t("wireColor.resultPrefix", { num: result.circuit })}{" "}
+            <span className={result.colorClass}>
+              {t(`colors.${result.colorKey}`)}
+            </span>{" "}
+            {t("wireColor.resultSuffix")}
           </div>
         )}
       </div>

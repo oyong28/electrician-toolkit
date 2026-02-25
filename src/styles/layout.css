@@ -66,6 +66,25 @@
   background: rgba(255, 255, 255, 0.22);
 }
 
+/* Language toggle: show on desktop + mobile */
+.header-lang {
+  display: inline-flex;
+  align-items: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--nav-active);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.header-lang:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
 /* Row under header: left rail + main */
 .app-shell-inner {
   flex: 1;
@@ -129,7 +148,9 @@
 
   cursor: pointer;
   font-size: 0.95rem;
-  transition: background-color 0.15s ease, color 0.15s ease,
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
     border-color 0.15s ease;
 }
 
@@ -174,6 +195,9 @@
 .tool-stage {
   position: relative;
   z-index: 10;
+
+  display: flex;
+  justify-content: center; /* horizontal center */
 }
 
 /* Footer */
